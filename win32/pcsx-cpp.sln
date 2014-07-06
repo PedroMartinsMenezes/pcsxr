@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcsx-cpp", "pcsx-cpp.vcxproj", "{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = pcsx-cpp.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug No Type Info Name|Win32 = Debug No Type Info Name|Win32
+		Debug Unicode|Win32 = Debug Unicode|Win32
+		Debug|Win32 = Debug|Win32
+		Release Unicode|Win32 = Release Unicode|Win32
+		Release|Win32 = Release|Win32
+		Template|Win32 = Template|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug No Type Info Name|Win32.ActiveCfg = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug No Type Info Name|Win32.Build.0 = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug Unicode|Win32.ActiveCfg = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug Unicode|Win32.Build.0 = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug|Win32.Build.0 = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release Unicode|Win32.ActiveCfg = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release Unicode|Win32.Build.0 = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release|Win32.ActiveCfg = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release|Win32.Build.0 = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Template|Win32.ActiveCfg = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Template|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

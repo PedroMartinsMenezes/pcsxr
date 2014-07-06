@@ -77,7 +77,7 @@ static unsigned int cddaCurPos = 0;
 static unsigned int pregapOffset;
 
 // compressed image stuff
-static struct {
+struct CompressedImage {
 	unsigned char buff_raw[16][CD_FRAMESIZE_RAW];
 	unsigned char buff_compressed[CD_FRAMESIZE_RAW * 16 + 100];
 	unsigned int *index_table;
@@ -85,9 +85,13 @@ static struct {
 	unsigned int block_shift;
 	unsigned int current_block;
 	unsigned int sector_in_blk;
-} *compr_img;
+};
+
+CompressedImage* compr_img;
 
 int (*cdimg_read_func)(FILE *f, unsigned int base, void *dest, int sector);
+
+
 
 char* CALLBACK CDR__getDriveLetter(void);
 long CALLBACK CDR__configure(void);
@@ -96,18 +100,34 @@ void CALLBACK CDR__about(void);
 long CALLBACK CDR__setfilename(char *filename);
 long CALLBACK CDR__getStatus(struct CdrStat *stat);
 
+
+
 static void DecodeRawSubData(void);
 
-struct trackinfo {
-	enum {DATA=1, CDDA} type;
-	u8 start[3];		// MSF-format
-	u8 length[3];		// MSF-format
-	FILE *handle;		// for multi-track images CDDA
-	enum {NONE=0, BIN=1, CCDDA=2
+enum TrackType {
+	TRACK_TYPE_NONE = 0,
+	DATA = 1, 
+	CDDA = 2
+};
+
+enum CddaType {
+	CDDA_TYPE_NONE = 0, 
+	BIN = 1, 
+	CCDDA = 2
 #ifdef ENABLE_CCDDA1
-		,MP3=AV_CODEC_ID_MP3, APE=AV_CODEC_ID_APE, FLAC=AV_CODEC_ID_FLAC
+	,
+	MP3 = AV_CODEC_ID_MP3, 
+	APE = AV_CODEC_ID_APE, 
+	FLAC = AV_CODEC_ID_FLAC
 #endif
-	} cddatype;	// BIN, WAV, MP3, APE
+};
+
+struct trackinfo {
+	TrackType type;
+	s8 start[3];		// MSF-format
+	s8 length[3];		// MSF-format
+	FILE *handle;		// for multi-track images CDDA
+	CddaType cddatype;
 	void* decoded_buffer;
 	u32	 len_decoded_buffer;
 	char filepath[256];
@@ -117,14 +137,16 @@ struct trackinfo {
 #define MAXTRACKS 100 /* How many tracks can a CD hold? */
 
 static int numtracks = 0;
-static struct trackinfo ti[MAXTRACKS];
+static trackinfo ti[MAXTRACKS];
+
+int handlearchive(const char *isoname, s32* accurate_length);
 
 // get a sector from a msf-array
-unsigned int msf2sec(char *msf) {
+u32 msf2sec(s8* msf) {
 	return ((msf[0] * 60 + msf[1]) * 75) + msf[2];
 }
 
-void sec2msf(unsigned int s, char *msf) {
+void sec2msf(u32 s, s8* msf) {
 	msf[0] = s / 75 / 60;
 	s = s - msf[0] * 75 * 60;
 	msf[1] = s / 75;
@@ -161,7 +183,7 @@ static void tok2msf(char *time, char *msf) {
 	}
 }
 
-static int get_cdda_type(const char *str)
+static CddaType get_cdda_type(const char *str)
 {
 	const size_t lenstr = strlen(str);
 	if (strncmp((str+lenstr-3), "bin", 3) == 0) {
@@ -375,7 +397,7 @@ static int parsetoc(const char *isofile) {
 		}
 	}
 
-	memset(&ti, 0, sizeof(ti));
+	memset(&ti, 0, sizeof(trackinfo));
 	cddaBigEndian = TRUE; // cdrdao uses big-endian for CD Audio
 
 	sector_size = CD_FRAMESIZE_RAW;
@@ -419,7 +441,7 @@ static int parsetoc(const char *isofile) {
 				sscanf(linebuf, "DATAFILE \"%[^\"]\" #%d %8s", name, &t, time2);
 				ti[numtracks].start_offset = t;
 				t = t / sector_size + sector_offs;
-				sec2msf(t, (char *)&ti[numtracks].start);
+				sec2msf(t, (s8*)&ti[numtracks].start);
 				tok2msf((char *)&time2, (char *)&ti[numtracks].length);
 			}
 			else {
@@ -433,7 +455,7 @@ static int parsetoc(const char *isofile) {
 			t += msf2sec(ti[numtracks].start) * sector_size;
 			ti[numtracks].start_offset = t;
 			t = t / sector_size + sector_offs;
-			sec2msf(t, (char *)&ti[numtracks].start);
+			sec2msf(t, (s8*)&ti[numtracks].start);
 			tok2msf((char *)&time2, (char *)&ti[numtracks].length);
 		}
 		else if (!strcmp(token, "ZERO") || !strcmp(token, "SILENCE")) {
@@ -814,12 +836,12 @@ static int parsemds(const char *isofile) {
 		fread(&l, 1, sizeof(unsigned int), fi);
 		l = SWAP32(l);
 		if (l != 0 && i > 1)
-			pregapOffset = msf2sec(ti[i].start);
+			pregapOffset = msf2sec((s8*)ti[i].start);
 
 		// get the track length
 		fread(&l, 1, sizeof(unsigned int), fi);
 		l = SWAP32(l);
-		sec2msf(l, ti[i].length);
+		sec2msf(l, (s8*)ti[i].length);
 
 		offset += 0x50;
 	}
@@ -949,12 +971,12 @@ static int handlepbp(const char *isofile) {
 		ti[i].start[2] = btoi(toc_entry.index1[2]);
 
 		if (i > 1) {
-			t = msf2sec(ti[i].start) - msf2sec(ti[i - 1].start);
-			sec2msf(t, ti[i - 1].length);
+			t = msf2sec((s8*)ti[i].start) - msf2sec((s8*)ti[i - 1].start);
+			sec2msf(t, (s8*)ti[i - 1].length);
 		}
 	}
 	t = cd_length - ti[numtracks].start_offset / 2352;
-	sec2msf(t, ti[numtracks].length);
+	sec2msf(t, (s8*)ti[numtracks].length);
 
 	// seek to ISO index
 	ret = fseek(cdHandle, psisoimg_offs + 0x4000, SEEK_SET);
@@ -963,7 +985,7 @@ static int handlepbp(const char *isofile) {
 		goto fail_io;
 	}
 
-	compr_img = calloc(1, sizeof(*compr_img));
+	compr_img = (CompressedImage*)calloc(1, sizeof(*compr_img));
 	if (compr_img == NULL)
 		goto fail_io;
 
@@ -971,7 +993,7 @@ static int handlepbp(const char *isofile) {
 	compr_img->current_block = (unsigned int)-1;
 
 	compr_img->index_len = (0x100000 - 0x4000) / sizeof(index_entry);
-	compr_img->index_table = malloc((compr_img->index_len + 1) * sizeof(compr_img->index_table[0]));
+	compr_img->index_table = (unsigned int*)malloc((compr_img->index_len + 1) * sizeof(compr_img->index_table[0]));
 	if (compr_img->index_table == NULL)
 		goto fail_io;
 
@@ -1043,7 +1065,7 @@ static int handlecbin(const char *isofile) {
 		}
 	}
 
-	compr_img = calloc(1, sizeof(*compr_img));
+	compr_img = (CompressedImage*)calloc(1, sizeof(*compr_img));
 	if (compr_img == NULL)
 		goto fail_io;
 
@@ -1051,7 +1073,7 @@ static int handlecbin(const char *isofile) {
 	compr_img->current_block = (unsigned int)-1;
 
 	compr_img->index_len = ciso_hdr.total_bytes / ciso_hdr.block_size;
-	compr_img->index_table = malloc((compr_img->index_len + 1) * sizeof(compr_img->index_table[0]));
+	compr_img->index_table = (unsigned int*)malloc((compr_img->index_len + 1) * sizeof(compr_img->index_table[0]));
 	if (compr_img->index_table == NULL)
 		goto fail_io;
 
@@ -1165,9 +1187,9 @@ static int uncompress2(void *out, unsigned long *out_size, void *in, unsigned lo
 	if (ret != Z_OK)
 		return ret;
 
-	z.next_in = in;
+	z.next_in = (Bytef*)in;
 	z.avail_in = in_size;
-	z.next_out = out;
+	z.next_out = (Bytef*)out;
 	z.avail_out = *out_size;
 
 	ret = inflate(&z, Z_NO_FLUSH);
@@ -1456,7 +1478,7 @@ int handleecm(const char *isoname, FILE* cdh, s32* accurate_length) {
 		len_ecm_savetable = 75*80*60; //2*(accurate_length/CD_FRAMESIZE_RAW);
 
 		// Index 0 always points to beginning of ECM data
-		ecm_savetable = calloc(len_ecm_savetable, sizeof(ECMFILELUT)); // calloc returns nulled data
+		ecm_savetable = (ECMFILELUT*)calloc(len_ecm_savetable, sizeof(ECMFILELUT)); // calloc returns nulled data
 		ecm_savetable[0].filepos = ECM_HEADER_SIZE;
 
 		if (accurate_length || decoded_ecm_sectors) {
@@ -1779,11 +1801,11 @@ static long CALLBACK ISOclose(void) {
 			if (ti[i].decoded_buffer != NULL) {
 				free(ti[i].decoded_buffer);
 			}
-			ti[i].cddatype = NONE;
+			ti[i].cddatype = CDDA_TYPE_NONE;
 		}
 	}
 	numtracks = 0;
-	ti[1].type = 0;
+	ti[1].type = TRACK_TYPE_NONE;
  
 	memset(cdbuffer, 0, sizeof(cdbuffer));
 	CDR_getBuffer = ISOgetBuffer;
@@ -1967,7 +1989,7 @@ static long CALLBACK ISOgetStatus(struct CdrStat *stat) {
 	
 	// relative -> absolute time
 	sect = cddaCurPos;
-	sec2msf(sect, (u8 *)stat->Time);
+	sec2msf(sect, (s8*)stat->Time);
 	
 	return 0;
 }
@@ -1978,7 +2000,7 @@ long CALLBACK ISOreadCDDA(unsigned char m, unsigned char s, unsigned char f, uns
 	unsigned int file, track, track_start = 0;
 	int ret;
 
-	cddaCurPos = msf2sec(msf);
+	cddaCurPos = msf2sec((s8*)msf);
 
 	// find current track index
 	for (track = numtracks; ; track--) {

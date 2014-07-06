@@ -25,10 +25,13 @@
 
 #include "ix86.h"
 #include <sys/mman.h>
+#include "iR3000A.h"
 
 #ifndef MAP_ANONYMOUS
 #define MAP_ANONYMOUS MAP_ANON
 #endif
+
+
 
 u32 *psxRecLUT;
 
@@ -42,6 +45,60 @@ u32 *psxRecLUT;
 #define PC_REC32(x) (*(u32*)PC_REC(x))
 
 #define RECMEM_SIZE		(8 * 1024 * 1024)
+
+static void (*recBSC[64])() = {
+	recSPECIAL, recREGIMM, recJ   , recJAL  , recBEQ , recBNE , recBLEZ, recBGTZ,
+	recADDI   , recADDIU , recSLTI, recSLTIU, recANDI, recORI , recXORI, recLUI ,
+	recCOP0   , recNULL  , recCOP2, recNULL , recNULL, recNULL, recNULL, recNULL,
+	recNULL   , recNULL  , recNULL, recNULL , recNULL, recNULL, recNULL, recNULL,
+	recLB     , recLH    , recLWL , recLW   , recLBU , recLHU , recLWR , recNULL,
+	recSB     , recSH    , recSWL , recSW   , recNULL, recNULL, recSWR , recNULL,
+	recNULL   , recNULL  , recLWC2, recNULL , recNULL, recNULL, recNULL, recNULL,
+	recNULL   , recNULL  , recSWC2, recHLE  , recNULL, recNULL, recNULL, recNULL
+};
+
+static void (*recSPC[64])() = {
+	recSLL , recNULL, recSRL , recSRA , recSLLV   , recNULL , recSRLV, recSRAV,
+	recJR  , recJALR, recNULL, recNULL, recSYSCALL, recBREAK, recNULL, recNULL,
+	recMFHI, recMTHI, recMFLO, recMTLO, recNULL   , recNULL , recNULL, recNULL,
+	recMULT, recMULTU, recDIV, recDIVU, recNULL   , recNULL , recNULL, recNULL,
+	recADD , recADDU, recSUB , recSUBU, recAND    , recOR   , recXOR , recNOR ,
+	recNULL, recNULL, recSLT , recSLTU, recNULL   , recNULL , recNULL, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL   , recNULL , recNULL, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL   , recNULL , recNULL, recNULL
+};
+
+static void (*recREG[32])() = {
+	recBLTZ  , recBGEZ  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recNULL  , recNULL  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recBLTZAL, recBGEZAL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recNULL  , recNULL  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
+};
+
+static void (*recCP0[32])() = {
+	recMFC0, recNULL, recCFC0, recNULL, recMTC0, recNULL, recCTC0, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recRFE , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
+};
+
+static void (*recCP2[64])() = {
+	recBASIC, recRTPS , recNULL , recNULL, recNULL, recNULL , recNCLIP, recNULL, // 00
+	recNULL , recNULL , recNULL , recNULL, recOP  , recNULL , recNULL , recNULL, // 08
+	recDPCS , recINTPL, recMVMVA, recNCDS, recCDP , recNULL , recNCDT , recNULL, // 10
+	recNULL , recNULL , recNULL , recNCCS, recCC  , recNULL , recNCS  , recNULL, // 18
+	recNCT  , recNULL , recNULL , recNULL, recNULL, recNULL , recNULL , recNULL, // 20
+	recSQR  , recDCPL , recDPCT , recNULL, recNULL, recAVSZ3, recAVSZ4, recNULL, // 28 
+	recRTPT , recNULL , recNULL , recNULL, recNULL, recNULL , recNULL , recNULL, // 30
+	recNULL , recNULL , recNULL , recNULL, recNULL, recGPF  , recGPL  , recNCCT  // 38
+};
+
+static void (*recCP2BSC[32])() = {
+	recMFC2, recNULL, recCFC2, recNULL, recMTC2, recNULL, recCTC2, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
+	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
+};
 
 static char *recMem;	/* the recompiled blocks will be here */
 static char *recRAM;	/* and the ptr to the blocks here */
@@ -70,12 +127,6 @@ static iRegisters iRegsS[32];
 #define IsConst(reg)  (iRegs[reg].state == ST_CONST)
 #define IsMapped(reg) (iRegs[reg].state == ST_MAPPED)
 
-static void (*recBSC[64])();
-static void (*recSPC[64])();
-static void (*recREG[32])();
-static void (*recCP0[32])();
-static void (*recCP2[64])();
-static void (*recCP2BSC[32])();
 
 #define DYNAREC_BLOCK 50
 
@@ -402,7 +453,7 @@ static int recInit() {
 
 	psxRecLUT = (u32 *)malloc(0x010000 * 4);
 
-	recMem = mmap(0, RECMEM_SIZE + 0x1000,
+	recMem = (s8*)mmap(0, RECMEM_SIZE + 0x1000,
 		PROT_EXEC | PROT_WRITE | PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
 	recRAM = (char *)malloc(0x200000);
@@ -2871,59 +2922,7 @@ static void recHLE() {
 
 //
 
-static void (*recBSC[64])() = {
-	recSPECIAL, recREGIMM, recJ   , recJAL  , recBEQ , recBNE , recBLEZ, recBGTZ,
-	recADDI   , recADDIU , recSLTI, recSLTIU, recANDI, recORI , recXORI, recLUI ,
-	recCOP0   , recNULL  , recCOP2, recNULL , recNULL, recNULL, recNULL, recNULL,
-	recNULL   , recNULL  , recNULL, recNULL , recNULL, recNULL, recNULL, recNULL,
-	recLB     , recLH    , recLWL , recLW   , recLBU , recLHU , recLWR , recNULL,
-	recSB     , recSH    , recSWL , recSW   , recNULL, recNULL, recSWR , recNULL,
-	recNULL   , recNULL  , recLWC2, recNULL , recNULL, recNULL, recNULL, recNULL,
-	recNULL   , recNULL  , recSWC2, recHLE  , recNULL, recNULL, recNULL, recNULL
-};
 
-static void (*recSPC[64])() = {
-	recSLL , recNULL, recSRL , recSRA , recSLLV   , recNULL , recSRLV, recSRAV,
-	recJR  , recJALR, recNULL, recNULL, recSYSCALL, recBREAK, recNULL, recNULL,
-	recMFHI, recMTHI, recMFLO, recMTLO, recNULL   , recNULL , recNULL, recNULL,
-	recMULT, recMULTU, recDIV, recDIVU, recNULL   , recNULL , recNULL, recNULL,
-	recADD , recADDU, recSUB , recSUBU, recAND    , recOR   , recXOR , recNOR ,
-	recNULL, recNULL, recSLT , recSLTU, recNULL   , recNULL , recNULL, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL   , recNULL , recNULL, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL   , recNULL , recNULL, recNULL
-};
-
-static void (*recREG[32])() = {
-	recBLTZ  , recBGEZ  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recNULL  , recNULL  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recBLTZAL, recBGEZAL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recNULL  , recNULL  , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
-};
-
-static void (*recCP0[32])() = {
-	recMFC0, recNULL, recCFC0, recNULL, recMTC0, recNULL, recCTC0, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recRFE , recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
-};
-
-static void (*recCP2[64])() = {
-	recBASIC, recRTPS , recNULL , recNULL, recNULL, recNULL , recNCLIP, recNULL, // 00
-	recNULL , recNULL , recNULL , recNULL, recOP  , recNULL , recNULL , recNULL, // 08
-	recDPCS , recINTPL, recMVMVA, recNCDS, recCDP , recNULL , recNCDT , recNULL, // 10
-	recNULL , recNULL , recNULL , recNCCS, recCC  , recNULL , recNCS  , recNULL, // 18
-	recNCT  , recNULL , recNULL , recNULL, recNULL, recNULL , recNULL , recNULL, // 20
-	recSQR  , recDCPL , recDPCT , recNULL, recNULL, recAVSZ3, recAVSZ4, recNULL, // 28 
-	recRTPT , recNULL , recNULL , recNULL, recNULL, recNULL , recNULL , recNULL, // 30
-	recNULL , recNULL , recNULL , recNULL, recNULL, recGPF  , recGPL  , recNCCT  // 38
-};
-
-static void (*recCP2BSC[32])() = {
-	recMFC2, recNULL, recCFC2, recNULL, recMTC2, recNULL, recCTC2, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL,
-	recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL, recNULL
-};
 
 static void recRecompile() {
 	char *p;

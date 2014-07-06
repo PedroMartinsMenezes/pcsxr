@@ -30,10 +30,12 @@
 #include "NoPic.h"
 #include "misc.h"
 #include "sio.h"
+#include "cdrom.h"
 
 int ShowPic = 0;
 
-extern void LidInterrupt();
+//extern void LidInterrupt();
+
 
 void gpuShowPic() {
 	char Text[255];
@@ -171,7 +173,7 @@ void PADhandleKey(int key) {
 	}
 }
 
-char charsTable[4] = { "|/-\\" };
+char charsTable[] = { "|/-\\" };
 
 BOOL CALLBACK ConnectDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	char str[256];
@@ -304,9 +306,10 @@ int _OpenPlugins(HWND hWnd) {
 	return 0;
 }
 
-int OpenPlugins(HWND hWnd, int internaliso) {
+//int OpenPlugins(HWND hWnd, int internaliso) {
+int OpenPlugins(void* handle) {
 	int ret;
-
+	HWND hWnd = (HWND)handle;
 	while ((ret = _OpenPlugins(hWnd)) == -2) {
 		ReleasePlugins();
 		LoadMcds(Config.Mcd1, Config.Mcd2);

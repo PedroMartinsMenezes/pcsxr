@@ -1231,7 +1231,7 @@ void psxBios__96_remove() { // 72
 }
 
 void psxBios_SetMem() { // 9f
-	u32 new = psxHu32(0x1060);
+	u32 new_ = psxHu32(0x1060);
 
 #ifdef PSXBIOS_LOG
 	PSXBIOS_LOG("psxBios_%s: %x, %x\n", biosA0n[0x9f], a0, a1);
@@ -1239,13 +1239,13 @@ void psxBios_SetMem() { // 9f
 
 	switch(a0) {
 		case 2:
-			psxHu32ref(0x1060) = SWAP32(new);
+			psxHu32ref(0x1060) = SWAP32(new_);
 			psxMu32ref(0x060) = a0;
 			SysPrintf("Change effective memory : %d MBytes\n",a0);
 			break;
 
 		case 8:
-			psxHu32ref(0x1060) = SWAP32(new | 0x300);
+			psxHu32ref(0x1060) = SWAP32(new_ | 0x300);
 			psxMu32ref(0x060) = a0;
 			SysPrintf("Change effective memory : %d MBytes\n",a0);
 	
@@ -2585,7 +2585,7 @@ void psxBiosInit() {
 /**/
 	base = 0x1000;
 	size = sizeof(EvCB) * 32;
-	Event = (void *)&psxR[base]; base += size * 6;
+	Event = (EvCB*)&psxR[base]; base += size * 6;
 	memset(Event, 0, size * 6);
 	HwEV = Event;
 	EvEV = Event + 32;

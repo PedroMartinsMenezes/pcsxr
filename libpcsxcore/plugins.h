@@ -56,7 +56,7 @@ typedef long (CALLBACK* SIO1open)(HWND);
 
 int LoadPlugins();
 void ReleasePlugins();
-int OpenPlugins();
+int OpenPlugins(void* handle);
 void ClosePlugins();
 
 typedef unsigned long (CALLBACK* PSEgetLibType)(void);

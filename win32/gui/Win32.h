@@ -25,9 +25,9 @@ typedef struct {
 	HMENU hMenu;         // Main window menu
 } AppData;
 
-AppData gApp;
-HANDLE hConsole;
-
+//Public Declarations -------------------------------------
+extern AppData gApp;
+extern HANDLE hConsole;
 extern int StatesC;
 extern int AccBreak;
 extern int ConfPlug;

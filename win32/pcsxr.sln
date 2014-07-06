@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcsxr", "pcsxr.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bladesio1", "plugins\bladesio1\bladesio1.vcxproj", "{F57B00CD-8399-4683-901E-11FA09727AE5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcsx-cpp", "pcsx-cpp.vcxproj", "{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -43,6 +45,10 @@ Global
 		{F57B00CD-8399-4683-901E-11FA09727AE5}.Debug|Win32.Build.0 = Debug|Win32
 		{F57B00CD-8399-4683-901E-11FA09727AE5}.Release|Win32.ActiveCfg = Release|Win32
 		{F57B00CD-8399-4683-901E-11FA09727AE5}.Release|Win32.Build.0 = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Debug|Win32.Build.0 = Debug|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release|Win32.ActiveCfg = Release|Win32
+		{DEBFD7DB-4BED-40A3-9A05-ACF1E773B9F9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

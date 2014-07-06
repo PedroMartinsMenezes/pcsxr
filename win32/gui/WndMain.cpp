@@ -44,6 +44,8 @@
 #endif
 #endif
 
+AppData gApp;
+HANDLE hConsole;
 int AccBreak = 0;
 int ConfPlug = 0;
 int StatesC = 0;
@@ -270,6 +272,8 @@ void RestoreWindow() {
 
 	if (!UseGui) PostMessage(gApp.hWnd, WM_COMMAND, ID_FILE_EXIT, 0);
 }
+
+
 
 void ResetMenuSlots() {
 	char str[256];
@@ -1203,7 +1207,7 @@ BOOL CALLBACK ConfigureMcdsDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 					Edit_GetText(GetDlgItem(hW,IDC_MCD1), str, 256);
 					i = ListView_GetSelectionMark(GetDlgItem(mcdDlg, IDC_LIST1));
-					data = Mcd1Data;
+					data = (u8*)Mcd1Data;
 
 					i++;
 
@@ -1223,7 +1227,7 @@ BOOL CALLBACK ConfigureMcdsDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lPa
 					for (j=0; j<127; j++) xor^=*ptr++;
 					*ptr = xor;
 
-					SaveMcd(str, data, i * 128, 128);
+					SaveMcd(str, (char*)data, i * 128, 128);
 					UpdateMcdDlg();
 				}
 
@@ -1237,7 +1241,7 @@ BOOL CALLBACK ConfigureMcdsDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 					Edit_GetText(GetDlgItem(hW,IDC_MCD2), str, 256);
 					i = ListView_GetSelectionMark(GetDlgItem(mcdDlg, IDC_LIST2));
-					data = Mcd2Data;
+					data = (u8*)Mcd2Data;
 
 					i++;
 
@@ -1257,7 +1261,7 @@ BOOL CALLBACK ConfigureMcdsDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lPa
 					for (j=0; j<127; j++) xor^=*ptr++;
 					*ptr = xor;
 
-					SaveMcd(str, data, i * 128, 128);
+					SaveMcd(str, (char*)data, i * 128, 128);
 					UpdateMcdDlg();
 				}
 
@@ -1837,7 +1841,7 @@ int SysInit() {
 	setvbuf(emuLog, NULL,  _IONBF, 0);
 #endif
 
-	while (LoadPlugins(0) == -1) {
+	while (LoadPlugins() == -1) {
 		CancelQuit = 1;
 		ConfigurePlugins(gApp.hWnd);
 		CancelQuit = 0;

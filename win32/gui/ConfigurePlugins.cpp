@@ -19,6 +19,7 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <stdio.h>
+#include <shlobj.h>
 #include "psxcommon.h"
 #include "plugin.h"
 #include "plugins.h"
@@ -41,65 +42,65 @@
 #define SetKey(name, var, s, t) \
 	RegSetValueEx(myKey, name, 0, t, (LPBYTE)var, s);
 
-int LoadConfig() {
-	HKEY myKey;
-	DWORD type, size, tmp;
-	PcsxConfig *Conf = &Config;
-	int err;
-#ifdef ENABLE_NLS
-	char text[256];
-#endif
-
-	if (RegOpenKeyEx(HKEY_CURRENT_USER,cfgfile,0,KEY_ALL_ACCESS,&myKey)!=ERROR_SUCCESS) return -1;
-
-	err = 1;
-	QueryKey(256, "Bios", Conf->Bios);
-	QueryKey(256, "Gpu",  Conf->Gpu);
-	QueryKey(256, "Spu",  Conf->Spu);
-	QueryKey(256, "Cdr",  Conf->Cdr);
-	QueryKey(256, "Pad1", Conf->Pad1);
-	QueryKey(256, "Pad2", Conf->Pad2);
-#ifdef ENABLE_SIO1API
-	QueryKey(256, "Sio1", Conf->Sio1);
-#endif
-	QueryKey(256, "Mcd1", Conf->Mcd1);
-	QueryKey(256, "Mcd2", Conf->Mcd2);
-	QueryKey(256, "PluginsDir", Conf->PluginsDir);
-	QueryKey(256, "BiosDir",    Conf->BiosDir);
-	err = 0;
-	QueryKey(256, "Net",  Conf->Net);
-	QueryKey(256, "Lang", Conf->Lang);
-
-	QueryKeyV("Xa",       Conf->Xa);
-	QueryKeyV("SioIrq",   Conf->SioIrq);
-	QueryKeyV("Mdec",     Conf->Mdec);
-	QueryKeyV("PsxAuto",  Conf->PsxAuto);
-	QueryKeyV("Cdda",     Conf->Cdda);
-	QueryKeyV("SlowBoot", Conf->SlowBoot);
-	QueryKeyV("Debug",    Conf->Debug);
-	QueryKeyV("PsxOut",   Conf->PsxOut);
-	QueryKeyV("SpuIrq",   Conf->SpuIrq);
-	QueryKeyV("RCntFix",  Conf->RCntFix);
-	QueryKeyV("VSyncWA",  Conf->VSyncWA);
-	QueryKeyV("Widescreen",  Conf->Widescreen);
-	QueryKeyV("HideCursor",  Conf->HideCursor);
-	QueryKeyV("SaveWindowPos",  Conf->SaveWindowPos);
-	QueryKeyV("WindowPosX",  Conf->WindowPos[0]);
-	QueryKeyV("WindowPosY",  Conf->WindowPos[1]);
-
-	QueryKeyV("Cpu",      Conf->Cpu);
-	QueryKeyV("PsxType",  Conf->PsxType);
-
-	if (Config.Cpu == CPU_DYNAREC) {
-		Config.Debug = 0; // don't enable debugger if using dynarec core
-	}
-
-	RegCloseKey(myKey);
-
-#ifdef ENABLE_NLS
-	sprintf(text, "LANGUAGE=%s", Conf->Lang);
-	gettext_putenv(text);
-#endif
+int LoadConfig() {//@@@
+//	HKEY myKey;
+//	DWORD type, size, tmp;
+//	PcsxConfig *Conf = &Config;
+//	int err;
+//#ifdef ENABLE_NLS
+//	char text[256];
+//#endif
+//
+//	if (RegOpenKeyEx(HKEY_CURRENT_USER,cfgfile,0,KEY_ALL_ACCESS,&myKey)!=ERROR_SUCCESS) return -1;
+//
+//	err = 1;
+//	QueryKey(256, "Bios", Conf->Bios);
+//	QueryKey(256, "Gpu",  Conf->Gpu);
+//	QueryKey(256, "Spu",  Conf->Spu);
+//	QueryKey(256, "Cdr",  Conf->Cdr);
+//	QueryKey(256, "Pad1", Conf->Pad1);
+//	QueryKey(256, "Pad2", Conf->Pad2);
+//#ifdef ENABLE_SIO1API
+//	QueryKey(256, "Sio1", Conf->Sio1);
+//#endif
+//	QueryKey(256, "Mcd1", Conf->Mcd1);
+//	QueryKey(256, "Mcd2", Conf->Mcd2);
+//	QueryKey(256, "PluginsDir", Conf->PluginsDir);
+//	QueryKey(256, "BiosDir",    Conf->BiosDir);
+//	err = 0;
+//	QueryKey(256, "Net",  Conf->Net);
+//	QueryKey(256, "Lang", Conf->Lang);
+//
+//	QueryKeyV("Xa",       Conf->Xa);
+//	QueryKeyV("SioIrq",   Conf->SioIrq);
+//	QueryKeyV("Mdec",     Conf->Mdec);
+//	QueryKeyV("PsxAuto",  Conf->PsxAuto);
+//	QueryKeyV("Cdda",     Conf->Cdda);
+//	QueryKeyV("SlowBoot", Conf->SlowBoot);
+//	QueryKeyV("Debug",    Conf->Debug);
+//	QueryKeyV("PsxOut",   Conf->PsxOut);
+//	QueryKeyV("SpuIrq",   Conf->SpuIrq);
+//	QueryKeyV("RCntFix",  Conf->RCntFix);
+//	QueryKeyV("VSyncWA",  Conf->VSyncWA);
+//	QueryKeyV("Widescreen",  Conf->Widescreen);
+//	QueryKeyV("HideCursor",  Conf->HideCursor);
+//	QueryKeyV("SaveWindowPos",  Conf->SaveWindowPos);
+//	QueryKeyV("WindowPosX",  Conf->WindowPos[0]);
+//	QueryKeyV("WindowPosY",  Conf->WindowPos[1]);
+//
+//	QueryKeyV("Cpu",      Conf->Cpu);
+//	QueryKeyV("PsxType",  Conf->PsxType);
+//
+//	if (Config.Cpu == CPU_DYNAREC) {
+//		Config.Debug = 0; // don't enable debugger if using dynarec core
+//	}
+//
+//	RegCloseKey(myKey);
+//
+//#ifdef ENABLE_NLS
+//	sprintf(text, "LANGUAGE=%s", Conf->Lang);
+//	gettext_putenv(text);
+//#endif
 
 	return 0;
 }
@@ -487,7 +488,6 @@ void TestSIO1(HWND hW) {
 }
 
 
-#include <shlobj.h>
 
 int SelectPath(HWND hW, char *Title, char *Path) {
 	LPITEMIDLIST pidl;

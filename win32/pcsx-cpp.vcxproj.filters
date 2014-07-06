@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dependency">
+      <UniqueIdentifier>{c819823c-d93c-49e7-8134-a91c9c3853ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependency\zlib">
+      <UniqueIdentifier>{13d93680-5729-46c6-9340-cb2b5b4d8901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependency\intl">
+      <UniqueIdentifier>{cd145f94-9640-4921-8783-15c18757ffe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator">
+      <UniqueIdentifier>{195d197d-065c-4b67-be89-8cb9ad847ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\patch">
+      <UniqueIdentifier>{be24f2fc-4f1e-4503-b207-406cd0636dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\plugin">
+      <UniqueIdentifier>{0fa4dd1f-cdd7-4e30-9d2b-eea00232962a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\gui">
+      <UniqueIdentifier>{918a36cc-2570-4276-ac4d-34df772954a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\gui\cheat">
+      <UniqueIdentifier>{9410165c-d71f-4ae2-9914-c12501ffc226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\debug">
+      <UniqueIdentifier>{0547fda1-c261-4e1f-9f5a-20a13cb5db50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\socket">
+      <UniqueIdentifier>{1de01aa0-0639-44ac-a516-69851dcc4206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\glue">
+      <UniqueIdentifier>{55bd54cf-33d8-4484-ab6d-f91c7a15f40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\glue\sys">
+      <UniqueIdentifier>{b39f81cf-3304-46f3-a322-7f3c044dcdd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx">
+      <UniqueIdentifier>{e6a272e7-23dc-4676-b4b6-03e38d7f6f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\cdr">
+      <UniqueIdentifier>{6bd93d8d-bbec-422f-83a8-5afbcfd4da12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\gte">
+      <UniqueIdentifier>{cdc986b7-53c3-48ff-a2dd-5827b23e9992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\mdec">
+      <UniqueIdentifier>{01f288ef-626d-4406-be99-caf97569cc59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\spu">
+      <UniqueIdentifier>{8c0347b5-ac0d-4f78-8fbc-7e511ce3ad20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\others">
+      <UniqueIdentifier>{70190b82-ebcd-4213-ac5f-f325ab832875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\bios">
+      <UniqueIdentifier>{033dbe35-63b3-48bf-a64f-ef67926015e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\memory">
+      <UniqueIdentifier>{8c6eea68-a6d0-48a7-937e-ecea36f41b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\cpu">
+      <UniqueIdentifier>{f198eea3-80d4-41f7-8495-a39e9b792c71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psx\gpu">
+      <UniqueIdentifier>{2b67e967-0ec6-4e49-bfb8-e0be5c8521f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emulator\resource">
+      <UniqueIdentifier>{f3b0db57-4d0d-4055-97d2-04ff1805822c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzio.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infblock.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infcodes.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infutil.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>dependency\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\bindtextdom.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\dcgettext.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\dgettext.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\explodename.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\finddomain.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\gettext.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\intl-compat.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\l10nflist.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\loadmsgcat.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\localealias.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="intl\textdomain.c">
+      <Filter>dependency\intl</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\AboutDlg.cpp">
+      <Filter>emulator\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\cdrom.cpp">
+      <Filter>psx\cdr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\cdriso.cpp">
+      <Filter>psx\cdr</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\CheatDlg.cpp">
+      <Filter>emulator\gui\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\cheat.cpp">
+      <Filter>emulator\gui\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\r3000a.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\ppf.cpp">
+      <Filter>emulator\patch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\gte.cpp">
+      <Filter>psx\gte</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\decode_xa.cpp">
+      <Filter>psx\spu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\mdec.cpp">
+      <Filter>psx\mdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\misc.cpp">
+      <Filter>psx\cdr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\plugins.cpp">
+      <Filter>emulator\plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxdma.cpp">
+      <Filter>psx\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxinterpreter.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\ix86\iR3000A.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\spu.cpp">
+      <Filter>psx\spu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxbios.cpp">
+      <Filter>psx\bios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxhle.cpp">
+      <Filter>psx\bios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxmem.cpp">
+      <Filter>psx\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxhw.cpp">
+      <Filter>psx\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WndMain.cpp">
+      <Filter>emulator\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxcommon.cpp">
+      <Filter>psx</Filter>
+    </ClCompile>
+    <ClCompile Include="resource.h">
+      <Filter>emulator\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\sio.cpp">
+      <Filter>psx\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\ix86\ix86.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\disr3000a.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\gpu.cpp">
+      <Filter>psx\gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\debug.cpp">
+      <Filter>emulator\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\socket.cpp">
+      <Filter>emulator\socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpcsxcore\psxcounters.cpp">
+      <Filter>psx\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\plugin.cpp">
+      <Filter>emulator\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\ConfigurePlugins.cpp">
+      <Filter>emulator\gui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gui\AboutDlg.h">
+      <Filter>emulator\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\NoPic.h">
+      <Filter>emulator\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Win32.h">
+      <Filter>emulator\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\infblock.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\infcodes.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\infutil.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>dependency\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="glue\stdint.h">
+      <Filter>emulator\glue</Filter>
+    </ClInclude>
+    <ClInclude Include="glue\sys\mman.h">
+      <Filter>emulator\glue\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\gettext.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\gettextP.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\hash-string.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\intlconfig.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\libgettext.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\libintl.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="intl\loadinfo.h">
+      <Filter>dependency\intl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\cdriso.h">
+      <Filter>psx\cdr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\cdrom.h">
+      <Filter>psx\cdr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\r3000a.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\cheat.h">
+      <Filter>emulator\gui\cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\gte.h">
+      <Filter>psx\gte</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\mdec.h">
+      <Filter>psx\mdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\ppf.h">
+      <Filter>emulator\patch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\decode_xa.h">
+      <Filter>psx\spu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\misc.h">
+      <Filter>psx\cdr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\spu.h">
+      <Filter>psx\spu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\coff.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psemu_plugin_defs.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxbios.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxhle.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\sjisfont.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\ix86\iR3000A.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>emulator\glue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxinterpreter.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\sio.h">
+      <Filter>psx\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxdma.h">
+      <Filter>psx\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxmem.h">
+      <Filter>psx\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxhw.h">
+      <Filter>psx\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\ix86\iGte.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\ix86\ix86.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\gpu.h">
+      <Filter>psx\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\debug.h">
+      <Filter>emulator\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxcommon.h">
+      <Filter>psx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\socket.h">
+      <Filter>emulator\socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\system.h">
+      <Filter>psx\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\psxcounters.h">
+      <Filter>psx\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpcsxcore\plugins.h">
+      <Filter>emulator\plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\plugin.h">
+      <Filter>emulator\gui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gui\about.bmp">
+      <Filter>emulator\resource</Filter>
+    </None>
+    <None Include="gui\cdrom02.ico">
+      <Filter>emulator\resource</Filter>
+    </None>
+    <None Include="gui\pcsx.bmp">
+      <Filter>emulator\resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pcsxr.rc">
+      <Filter>emulator\resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

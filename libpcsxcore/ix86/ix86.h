@@ -31,9 +31,9 @@ extern "C" {
 #endif
 
 // include basic types
-#include "../psxcommon.h"
-#include "../r3000a.h"
-#include "../psxhle.h"
+#include "psxcommon.h"
+#include "r3000a.h"
+#include "psxhle.h"
 
 // x86Flags defines
 #define X86FLAG_FPU			0x00000001

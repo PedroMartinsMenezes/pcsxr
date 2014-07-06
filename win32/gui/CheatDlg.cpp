@@ -29,6 +29,8 @@
 #include "resource.h"
 #include "Win32.h"
 
+
+
 static void UpdateCheatDlg(HWND hW) {
     HWND		List;
     LV_ITEM		item;
