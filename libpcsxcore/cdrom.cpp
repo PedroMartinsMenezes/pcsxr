@@ -133,18 +133,12 @@ enum seeked_state {
 
 static struct CdrStat stat;
 
-extern unsigned int msf2sec(const char *msf);
-//extern void sec2msf(unsigned int s, const char *msf);
 
 // for that weird psemu API..
 static unsigned int fsm2sec(const u8 *msf) {
 	return ((msf[2] * 60 + msf[1]) * 75) + msf[0];
 }
 
-
-extern long CALLBACK ISOinit(void);
-extern void CALLBACK SPUirq(void);
-extern SPUregisterCallback SPU_registerCallback;
 
 // A bit of a kludge, but it will get rid of the "macro redefined" warnings
 

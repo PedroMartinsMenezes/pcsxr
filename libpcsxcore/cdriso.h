@@ -31,6 +31,7 @@ void cdrIsoInit(void);
 int cdrIsoActive(void);
 u32 msf2sec(s8* msf);
 void sec2msf(u32 s, s8* msf);
+long CALLBACK ISOinit(void);
 
 extern unsigned int cdrIsoMultidiskCount;
 extern unsigned int cdrIsoMultidiskSelect;
